@@ -61,25 +61,23 @@ h2 {
     min-height: 60px; /* Ensure space for longer questions */
     font-weight: bold;
     color: #2c3e50;
-    /* Temporarily remove animation styles for visibility diagnosis */
-    /* transition: opacity 0.6s ease-out, transform 0.6s ease-out; */
-    opacity: 1; /* Ensure visible */
-    transform: translateY(0px); /* Ensure no initial displacement */
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out; /* Re-introduce animation */
+    opacity: 0;
+    transform: translateY(60px); /* Start further below */
 }
 #question-text.fade-in {
-    /* opacity: 1; */ /* No need to change opacity if always 1 */
-    /* transform: translateY(0); */ /* No need if always 0 */
+    opacity: 1;
+    transform: translateY(0);
 }
 
 #options-container {
-    /* Temporarily remove animation styles for visibility diagnosis */
-    /* transition: opacity 0.6s ease-out, transform 0.6s ease-out; */
-    opacity: 1; /* Ensure visible */
-    transform: translateY(0px); /* Ensure no initial displacement */
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out; /* Re-introduce animation */
+    opacity: 0;
+    transform: translateY(60px); /* Start further below */
 }
 #options-container.fade-in {
-    /* opacity: 1; */
-    /* transform: translateY(0); */
+    opacity: 1;
+    transform: translateY(0);
 }
 
 #options-container label {

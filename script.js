@@ -122,8 +122,8 @@ function loadQuestion() {
     // Reset animations
     questionTextElement.classList.remove('fade-in');
     optionsContainerElement.classList.remove('fade-in');
-    questionTextElement.style.transform = 'translateY(20px)'; // Reset transform for re-animation
-    optionsContainerElement.style.transform = 'translateY(20px)'; // Reset transform for re-animation
+    questionTextElement.style.transform = 'translateY(60px)'; // Reset transform for re-animation
+    optionsContainerElement.style.transform = 'translateY(60px)'; // Reset transform for re-animation
 
 
     if (currentQuestionIndex < questions.length) {
@@ -147,9 +147,10 @@ function loadQuestion() {
             input.value = option.score;
             input.dataset.score = option.score;
 
-            const handleSelectionAndAdvance = () => {
-                userScores[currentQuestionIndex] = option.score; // Always set the score
-                updateNavigationButtons();
+            // Single handler for selection and advance
+            const processSelection = () => {
+                userScores[currentQuestionIndex] = option.score;
+                updateNavigationButtons(); // Update disabled state for prev button
 
                 // Advance logic
                 if (currentQuestionIndex < questions.length - 1) {
@@ -165,14 +166,17 @@ function loadQuestion() {
                 }
             };
 
-            // This handles the primary selection/change event
-            input.addEventListener("change", handleSelectionAndAdvance);
+            // Add event listener directly to the radio input for change events
+            input.addEventListener("change", processSelection);
 
-            // This handles re-clicking an already selected option to trigger advance
-            label.addEventListener("click", () => {
-                if (input.checked && userScores[currentQuestionIndex] !== null && userScores[currentQuestionIndex] === option.score) {
-                    // If the radio is already checked and matches the stored score, trigger advance
-                    handleSelectionAndAdvance();
+            // For the edge case where a user goes back and re-clicks the *already selected* option.
+            // The 'change' event won't fire. So, we'll manually trigger the advance if it's a re-selection.
+            // We'll use a click listener on the input itself.
+            input.addEventListener("click", (event) => {
+                // If the input is already checked and its value matches the user's current score for this question,
+                // it means it's a re-selection of the same option.
+                if (input.checked && parseInt(input.value) === userScores[currentQuestionIndex]) {
+                    processSelection(); // Manually trigger the advance
                 }
             });
 
@@ -181,6 +185,7 @@ function loadQuestion() {
             label.appendChild(document.createTextNode(option.text));
             optionsContainerElement.appendChild(label);
 
+            // Pre-select if already answered
             if (userScores[currentQuestionIndex] !== null && userScores[currentQuestionIndex] === option.score) {
                 input.checked = true;
             }
