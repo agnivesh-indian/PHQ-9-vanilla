@@ -1,6 +1,6 @@
 const questions = [
     {
-        text: "Little interest or pleasure in doing things",
+        text: "Little interest or pleasure in doing doing things",
         options: [
             { text: "Not at all", score: 0 },
             { text: "Several days", score: 1 },
@@ -120,11 +120,6 @@ startTestButton.addEventListener("click", () => {
 
 function loadQuestion() {
     // Animation reset is removed as CSS now ensures default visibility
-    // questionTextElement.classList.remove('fade-in');
-    // optionsContainerElement.classList.remove('fade-in');
-    // questionTextElement.style.transform = 'translateY(20px)';
-    // optionsContainerElement.style.transform = 'translateY(20px)';
-
 
     if (currentQuestionIndex < questions.length) {
         const question = questions[currentQuestionIndex];
@@ -149,6 +144,7 @@ function loadQuestion() {
 
             // Single handler for selection and advance
             const processSelection = () => {
+                console.log('Option selected, processing for advance:', { currentQuestionIndex, optionScore: option.score }); // Added console.log
                 userScores[currentQuestionIndex] = option.score;
                 updateNavigationButtons(); // Update disabled state for prev button
 
@@ -193,12 +189,6 @@ function loadQuestion() {
         updateNavigationButtons();
 
         // Animation class application is removed as CSS now ensures default visibility
-        // setTimeout(() => {
-        //     questionTextElement.classList.add('fade-in');
-        // }, 50);
-        // setTimeout(() => {
-        //     optionsContainerElement.classList.add('fade-in');
-        // }, 150);
     } else {
         displayResults();
     }
