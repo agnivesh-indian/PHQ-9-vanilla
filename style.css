@@ -33,6 +33,13 @@ h2 {
     margin-bottom: 20px;
 }
 
+.instruction-description {
+    font-size: 1.1em;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #555;
+}
+
 .instruction-text {
     font-size: 1.2em;
     text-align: center;
@@ -43,25 +50,34 @@ h2 {
     color: #2c3e50;
 }
 
+.start-button-wrapper {
+    text-align: center;
+    margin-top: 30px;
+}
+
 #question-text {
     font-size: 1.15em;
     margin-bottom: 25px;
     min-height: 60px; /* Ensure space for longer questions */
     font-weight: bold;
     color: #2c3e50;
-    transition: opacity 0.5s ease-in-out; /* For fade effect */
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out; /* Enhanced fade and slide */
     opacity: 0;
+    transform: translateY(20px); /* Start slightly below */
 }
 #question-text.fade-in {
     opacity: 1;
+    transform: translateY(0);
 }
 
 #options-container {
-    transition: opacity 0.5s ease-in-out; /* For fade effect */
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out; /* Enhanced fade and slide */
     opacity: 0;
+    transform: translateY(20px); /* Start slightly below */
 }
 #options-container.fade-in {
     opacity: 1;
+    transform: translateY(0);
 }
 
 #options-container label {

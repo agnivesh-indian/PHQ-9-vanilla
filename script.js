@@ -193,7 +193,7 @@ function displayResults() {
     resultsContainer.style.display = "block";
 
     const phq9Scores = userScores.slice(0, 9);
-    const totalPHQ9Score = phq9Scores.reduce((acc, score) => acc + (score || 0), 0); // Handle null for unanswered
+    const totalPHQ9Score = phq9Scores.reduce((acc, score) => acc + (score || 0), 0);
     totalScoreElement.textContent = `Your total PHQ-9 score is: ${totalPHQ9Score}`;
 
     let interpretationText = "";
@@ -212,25 +212,9 @@ function displayResults() {
     }
     interpretationText += `Severity: ${severity}.`;
 
-    interpretationText += "\n\nClinical Benchmarks:";
+    // Removed Clinical Benchmarks section as per request
 
-    if (totalPHQ9Score >= 10) {
-        interpretationText += "\n- Cut-off for Major Depression: A score of 10 or higher is the standard threshold for identifying probable Major Depressive Disorder (MDD), with roughly 88% sensitivity and specificity.";
-    }
-
-    const suicideRiskScore = userScores[8]; // Score for the 9th question (index 8)
-    if (suicideRiskScore > 0) {
-        interpretationText += "\n- Suicide Risk (Item 9): Any score above 0 on the final question (\"Thoughts that you would be better off dead...\") requires immediate clinical assessment for suicide risk.";
-    }
-
-    const functionalImpactQuestion = questions[9];
-    const functionalImpactScore = userScores[9];
-    if (functionalImpactQuestion && functionalImpactQuestion.is_functional_impact && (functionalImpactScore === 2 || functionalImpactScore === 3)) {
-        interpretationText += "\n- Functional Impact: Responses of \"very difficult\" or \"extremely difficult\" suggest significant functional impairment.";
-    }
-
-    interpretationText += "\n- Monitoring Progress: A change of 5 or more points is considered a clinically significant improvement or worsening of symptoms (for serial assessments).";
-    interpretationText += "\n\nNote: The PHQ-9 is a screening tool, not a definitive diagnosis. A clinical interview by a healthcare professional is necessary to confirm a diagnosis.";
+    interpretationText += "\n\nImportant Note: This PHQ-9 is a screening tool, not a definitive diagnosis. It is crucial to consult with a qualified healthcare professional or mental health expert for an accurate diagnosis and personalized guidance if you have concerns about your well-being or symptoms of depression.";
 
     interpretationElement.textContent = interpretationText;
 }
