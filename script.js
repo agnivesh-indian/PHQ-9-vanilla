@@ -147,7 +147,7 @@ function loadQuestion() {
             input.value = option.score;
             input.dataset.score = option.score;
 
-            const handleOptionSelection = () => {
+            const handleSelectionAndAdvance = () => {
                 userScores[currentQuestionIndex] = option.score; // Always set the score
                 updateNavigationButtons();
 
@@ -165,16 +165,14 @@ function loadQuestion() {
                 }
             };
 
-            // Add event listener to input for normal change events
-            input.addEventListener("change", handleOptionSelection);
+            // This handles the primary selection/change event
+            input.addEventListener("change", handleSelectionAndAdvance);
 
-            // Add a click listener to the label to handle re-selection of the *same* option
-            label.addEventListener("click", (event) => {
-                // If it's already checked, and it's clicked again, trigger selection logic
-                // This prevents the 'change' event from not firing when re-selecting the same option
-                if (input.checked) {
-                    event.stopPropagation(); // Prevent default radio button behavior if already checked
-                    handleOptionSelection(); // Manually trigger the selection logic
+            // This handles re-clicking an already selected option to trigger advance
+            label.addEventListener("click", () => {
+                if (input.checked && userScores[currentQuestionIndex] !== null && userScores[currentQuestionIndex] === option.score) {
+                    // If the radio is already checked and matches the stored score, trigger advance
+                    handleSelectionAndAdvance();
                 }
             });
 
