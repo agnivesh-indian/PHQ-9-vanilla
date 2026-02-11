@@ -1,6 +1,6 @@
 const questions = [
     {
-        text: "Little interest or pleasure in doing doing things",
+        text: "Little interest or pleasure in doing things",
         options: [
             { text: "Not at all", score: 0 },
             { text: "Several days", score: 1 },
@@ -111,6 +111,11 @@ const retakeButton = document.getElementById("retake-button");
 instructionsContainer.style.display = "block";
 quizContainer.style.display = "none";
 resultsContainer.style.display = "none";
+
+// Moved updateNavigationButtons here to ensure it's defined before being called
+function updateNavigationButtons() {
+    prevButton.disabled = currentQuestionIndex === 0;
+}
 
 startTestButton.addEventListener("click", () => {
     instructionsContainer.style.display = "none";
