@@ -5,13 +5,13 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background-color: #e0f2f7; /* Light blue/teal background */
-    color: #334;
+    background-color: #ffffff; /* Entire background white */
+    color: #343a40; /* Darker text for contrast on white */
     line-height: 1.6;
 }
 
 .container {
-    background-color: #ffffff;
+    background-color: #f8f9fa; /* Very light grey for subtle contrast with white background */
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -45,7 +45,7 @@ h2 {
     text-align: center;
     margin-bottom: 30px;
     padding: 15px;
-    background-color: #f0f8ff; /* Very light blue background for instructions */
+    background-color: #e9f5ff; /* Light blue background for instructions */
     border-left: 5px solid #007bff;
     color: #2c3e50;
 }
@@ -61,7 +61,7 @@ h2 {
     min-height: 60px; /* Ensure space for longer questions */
     font-weight: bold;
     color: #2c3e50;
-    transition: opacity 0.7s ease-out, transform 0.7s ease-out; /* Enhanced fade and slide */
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Enhanced fade and slide */
     opacity: 0;
     transform: translateY(20px); /* Start slightly below */
 }
@@ -71,7 +71,7 @@ h2 {
 }
 
 #options-container {
-    transition: opacity 0.7s ease-out, transform 0.7s ease-out; /* Enhanced fade and slide */
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Enhanced fade and slide */
     opacity: 0;
     transform: translateY(20px); /* Start slightly below */
 }
@@ -86,15 +86,15 @@ h2 {
     margin-bottom: 12px;
     cursor: pointer;
     padding: 12px 15px;
-    border: 1px solid #cceeff; /* Light blue border */
+    border: 1px solid #dee2e6; /* Light grey border */
     border-radius: 8px;
     transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     font-size: 1em;
 }
 
 #options-container label:hover {
-    background-color: #e6f7ff; /* Lighter blue on hover */
-    border-color: #99ddff;
+    background-color: #e2f2ff; /* Lighter blue on hover */
+    border-color: #007bff; /* Primary blue on hover */
     box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);
 }
 
