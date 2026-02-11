@@ -147,30 +147,11 @@ function loadQuestion() {
             input.value = option.score;
             input.dataset.score = option.score;
 
-            // Bug fix: Always trigger advance logic on click if already selected
-            label.addEventListener("click", () => {
-                // If the radio button associated with this label is already checked,
-                // and the user's score for this question matches this option's score,
-                // then it means they clicked the currently selected option.
-                // In this case, we manually trigger the auto-advance.
-                if (input.checked && userScores[currentQuestionIndex] !== null && userScores[currentQuestionIndex] === option.score) {
-                    if (currentQuestionIndex < questions.length - 1) {
-                        setTimeout(() => {
-                            currentQuestionIndex++;
-                            loadQuestion();
-                        }, 300);
-                    } else {
-                        setTimeout(() => {
-                            displayResults();
-                        }, 300);
-                    }
-                }
-            });
-
-            input.addEventListener("change", () => {
-                userScores[currentQuestionIndex] = option.score;
+            const handleOptionSelection = () => {
+                userScores[currentQuestionIndex] = option.score; // Always set the score
                 updateNavigationButtons();
-                // Auto-advance to next question
+
+                // Advance logic
                 if (currentQuestionIndex < questions.length - 1) {
                     setTimeout(() => {
                         currentQuestionIndex++;
@@ -182,7 +163,21 @@ function loadQuestion() {
                         displayResults();
                     }, 300);
                 }
+            };
+
+            // Add event listener to input for normal change events
+            input.addEventListener("change", handleOptionSelection);
+
+            // Add a click listener to the label to handle re-selection of the *same* option
+            label.addEventListener("click", (event) => {
+                // If it's already checked, and it's clicked again, trigger selection logic
+                // This prevents the 'change' event from not firing when re-selecting the same option
+                if (input.checked) {
+                    event.stopPropagation(); // Prevent default radio button behavior if already checked
+                    handleOptionSelection(); // Manually trigger the selection logic
+                }
             });
+
 
             label.appendChild(input);
             label.appendChild(document.createTextNode(option.text));
@@ -207,9 +202,41 @@ function loadQuestion() {
     }
 }
 
-function updateNavigationButtons() {
-    prevButton.disabled = currentQuestionIndex === 0;
+function displayResults() {
+    quizContainer.style.display = "none";
+    resultsContainer.style.display = "block";
+
+    const phq9Scores = userScores.slice(0, 9);
+    const totalPHQ9Score = phq9Scores.reduce((acc, score) => acc + (score || 0), 0);
+    totalScoreElement.textContent = `Your total PHQ-9 score is: ${totalPHQ9Score}`;
+
+    let interpretationText = "";
+    let severity = "";
+
+    if (totalPHQ9Score >= 0 && totalPHQ9Score <= 4) {
+        severity = "Minimal or no depression";
+    } else if (totalPHQ9Score >= 5 && totalPHQ9Score <= 9) {
+        severity = "Mild depression";
+    } else if (totalPHQ9Score >= 10 && totalPHQ9Score <= 14) {
+        severity = "Moderate depression";
+    } else if (totalPHQ9Score >= 15 && totalPHQ9Score <= 19) {
+        severity = "Moderately severe depression";
+    } else if (totalPHQ9Score >= 20 && totalPHQ9Score <= 27) {
+        severity = "Severe depression";
+    }
+    interpretationText += `Your Depression Severity: <strong>${severity}</strong>.`;
+
+    interpretationText += "\n\nImportant Note: This PHQ-9 is a screening tool, not a definitive diagnosis. It is crucial to consult with a qualified healthcare professional or mental health expert for an accurate diagnosis and personalized guidance if you have concerns about your well-being or symptoms of depression.";
+
+    interpretationElement.innerHTML = interpretationText;
 }
+
+prevButton.addEventListener("click", () => {
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        loadQuestion();
+    }
+});
 
 retakeButton.addEventListener("click", () => {
     currentQuestionIndex = 0;
