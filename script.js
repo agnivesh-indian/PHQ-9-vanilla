@@ -119,11 +119,11 @@ startTestButton.addEventListener("click", () => {
 });
 
 function loadQuestion() {
-    // Reset animations
-    questionTextElement.classList.remove('fade-in');
-    optionsContainerElement.classList.remove('fade-in');
-    questionTextElement.style.transform = 'translateY(60px)'; // Reset transform for re-animation
-    optionsContainerElement.style.transform = 'translateY(60px)'; // Reset transform for re-animation
+    // Animation reset is removed as CSS now ensures default visibility
+    // questionTextElement.classList.remove('fade-in');
+    // optionsContainerElement.classList.remove('fade-in');
+    // questionTextElement.style.transform = 'translateY(20px)';
+    // optionsContainerElement.style.transform = 'translateY(20px)';
 
 
     if (currentQuestionIndex < questions.length) {
@@ -192,14 +192,13 @@ function loadQuestion() {
         });
         updateNavigationButtons();
 
-        // Staggered animation for question text and options
-        setTimeout(() => {
-            questionTextElement.classList.add('fade-in');
-        }, 50); // Small delay for question text
-
-        setTimeout(() => {
-            optionsContainerElement.classList.add('fade-in');
-        }, 150); // Longer delay for options
+        // Animation class application is removed as CSS now ensures default visibility
+        // setTimeout(() => {
+        //     questionTextElement.classList.add('fade-in');
+        // }, 50);
+        // setTimeout(() => {
+        //     optionsContainerElement.classList.add('fade-in');
+        // }, 150);
     } else {
         displayResults();
     }
