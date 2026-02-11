@@ -95,20 +95,52 @@ const questions = [
 let currentQuestionIndex = 0;
 let userScores = Array(questions.length).fill(null); // Use null to indicate unanswered
 
+// Get elements
+const instructionsContainer = document.getElementById("instructions-container");
+const startTestButton = document.getElementById("start-test-button");
 const questionTextElement = document.getElementById("question-text");
 const optionsContainerElement = document.getElementById("options-container");
 const prevButton = document.getElementById("prev-button");
-const nextButton = document.getElementById("next-button");
 const quizContainer = document.getElementById("quiz-container");
 const resultsContainer = document.getElementById("results-container");
 const totalScoreElement = document.getElementById("total-score");
 const interpretationElement = document.getElementById("interpretation");
 const retakeButton = document.getElementById("retake-button");
 
+// Initial setup
+instructionsContainer.style.display = "block";
+quizContainer.style.display = "none";
+resultsContainer.style.display = "none";
+
+startTestButton.addEventListener("click", () => {
+    instructionsContainer.style.display = "none";
+    quizContainer.style.display = "block";
+    loadQuestion();
+});
+
 function loadQuestion() {
+    // Add animation for question change
+    questionTextElement.classList.remove('fade-in'); // Remove to re-trigger
+    optionsContainerElement.classList.remove('fade-in'); // Remove to re-trigger
+    setTimeout(() => { // Small delay to allow class removal to register for animation
+        questionTextElement.classList.add('fade-in');
+        optionsContainerElement.classList.add('fade-in');
+    }, 10); 
+
+
     if (currentQuestionIndex < questions.length) {
         const question = questions[currentQuestionIndex];
-        questionTextElement.textContent = `Question ${currentQuestionIndex + 1}/${questions.length}: ${question.text}`;
+        
+        // Remove question numbers
+        questionTextElement.textContent = question.text;
+
+        // Distinguish additional question
+        if (question.is_functional_impact) {
+            questionTextElement.classList.add('additional-question');
+        } else {
+            questionTextElement.classList.remove('additional-question');
+        }
+
         optionsContainerElement.innerHTML = "";
 
         question.options.forEach((option, index) => {
@@ -121,6 +153,18 @@ function loadQuestion() {
             input.addEventListener("change", () => {
                 userScores[currentQuestionIndex] = option.score;
                 updateNavigationButtons();
+                // Auto-advance to next question
+                if (currentQuestionIndex < questions.length - 1) {
+                    setTimeout(() => {
+                        currentQuestionIndex++;
+                        loadQuestion();
+                    }, 300); // 300ms delay for visual feedback
+                } else {
+                    // All questions answered, display results
+                    setTimeout(() => {
+                        displayResults();
+                    }, 300);
+                }
             });
 
             label.appendChild(input);
@@ -140,8 +184,8 @@ function loadQuestion() {
 
 function updateNavigationButtons() {
     prevButton.disabled = currentQuestionIndex === 0;
-    nextButton.disabled = userScores[currentQuestionIndex] === null && currentQuestionIndex < questions.length - 1;
-    // The "Next" button should not be disabled for the last question if it's not answered yet, as it will trigger results
+    // Next button is removed, so no need to disable it.
+    // The auto-advance handles progression.
 }
 
 function displayResults() {
@@ -198,21 +242,13 @@ prevButton.addEventListener("click", () => {
     }
 });
 
-nextButton.addEventListener("click", () => {
-    // Only proceed if an option is selected or if it's the last question
-    if (userScores[currentQuestionIndex] !== null || currentQuestionIndex === questions.length - 1) {
-        currentQuestionIndex++;
-        loadQuestion();
-    }
-});
-
 retakeButton.addEventListener("click", () => {
     currentQuestionIndex = 0;
     userScores = Array(questions.length).fill(null);
-    quizContainer.style.display = "block";
+    instructionsContainer.style.display = "block"; // Go back to instructions page
+    quizContainer.style.display = "none";
     resultsContainer.style.display = "none";
-    loadQuestion();
 });
 
-// Initial load
-loadQuestion();
+// Initial load (moved to startTestButton click)
+// loadQuestion();
